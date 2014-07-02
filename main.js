@@ -1,13 +1,33 @@
-//global varble init
-var inverse = false;
-var count = 0;
-var batteryOn = false;
-var levelActive = false;
-var flesh = 0;
+/*************************************************************
+ * main.js
+ * 
+ * Contains:
+ * -Main game object: slo
+ * -Save/load
+ * -Game loops
+ *************************************************************/
+
+var slo = []; // Main game object, slo = space lich omega
+
+//gamestate varble init
+slo.gameState = {
+		inverse: false,
+		batteryOn: true,
+		levelActive: false,
+		previousLocation: levelInfo,
+		count: 0,
+		flesh: 0,
+		};
+
 var fists, woodSword, ironSword;
 
+
+/******************************************************
+ * Save and Load Related 
+ ******************************************************/
+
 //resets all objects back to original state
-function resetGame() {
+slo.resetGame = function() {
 	var message = 'This will reset your entire playthrough, this is not reversible, are you sure?';
 	if (confirm(message)) {
 		stuffToShow = {
@@ -162,8 +182,9 @@ function resetGame() {
 
 	}
 }
+
 //load game using local storage, runs necessary functions so that everything is the same it was before quitting
-function loadGame() {
+slo.loadGame = function() {
 	if (!localStorage['player_save']) return;
 	var player_data = JSON.parse(atob(localStorage['player_save']));
 	player = player_data;
@@ -193,20 +214,169 @@ function loadGame() {
 }
 
 //save game to local storage
-function saveGame() {
+slo.saveGame = function() {
 	localStorage['player_save'] = btoa(JSON.stringify(player));
 	localStorage['inventory_save'] = btoa(JSON.stringify(inventoryObject));
 	localStorage['show_save'] = btoa(JSON.stringify(stuffToShow));
 }
 
+slo.saveLoop = function() {
+	if (levelActive || shieldUsed || berserkUsed) {
+		console.log('cant save in level');
+	}
+	else {
+		saveGame();
+		console.log('game saved');
+	}
+	setTimeout(saveLoop, 5000);
+}
 
-function updateHealthBar() {
+/****************************************************
+ * Game Loops
+ ****************************************************/
+//main game loop, adds resources and hp
+slo.mainLoop = function() {
+	ectoplasmGenerator(player.gears);
+	if (player.health < player.maxHealth) {
+		healthRegen();
+		updateHealthBar();
+	}
+	fixHP();
+	if (batteryOn == true) {
+		bloodGenerator(player.batteries);
+	}
+	setTimeout(mainLoop, 1000);
+}
+
+//quest loop, called if level is active
+slo.questLoop = function(monster) {
+	if (bearCave) {
+		dropBearFall();
+	}
+	if (timeFrozen == false) {
+		moveInLevel(monster);		
+	}
+
+
+	if (timeFrozen) {
+		frozeTimer--;
+		$('#error').html('Time Frozen: ' + frozeTimer);
+		if (frozeTimer == 0) {
+			timeFrozen = false;
+		}
+	}
+	if (shieldUsed) {
+		shieldTimer--;
+		$('#error').html('Shield Left: ' +  shieldTimer);
+		if (shieldTimer == 0) {
+			shieldUsed = false;
+			player.reduction = oldReduction;
+		}
+	} 
+	if (berserkUsed) {
+		berserkTimer--;
+		$('#error').html('Berserk Left: ' + berserkTimer);
+		if (berserkTimer == 0) {
+			berserkUsed = false;
+			player.power = oldPower;
+		}
+	}
+
+	if (potionUsed) {
+		potionCD--;
+		$('#potionCDText').html("Potion Cooldown: " + potionCD);
+		if (potionCD == 0) {
+			potionUsed = false;
+			$('#error').html('');
+		}
+	}
+
+	if (levelActive == false) {
+		potionCD = 0;
+		potionUsed = false;
+		return;
+	}
+
+	setTimeout(function() {
+		questLoop(monster);
+	}, 500);
+}
+
+//not current being called
+slo.animateLoop = function() {
+	smokeAnimate();
+	blinkAnimate();
+
+	setTimeout(animateLoop, 750);
+}
+
+/************************************************
+ * GUI Related
+ ************************************************/
+slo.updateHealthBar = function() {
 	$('#hp').html(player.health.toFixed(2) + '/' + player.maxHealth);
 	$('#hp').css('width', player.health / player.maxHealth * 100 + '%');
 }
 
-function healthRegen() {
+slo.healthRegen = function() {
 	player.health = player.health + player.regenVal;
+}
+
+//generates ectoplasm on click
+slo.ectoplasmClick = function(num) {
+	player.money = player.money + num;
+	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
+}
+
+//generates ectoplasm overtime, passing in gears placed
+slo.ectoplasmGenerator = function(num) {
+	player.money = player.money + num*player.extraMoneyGen;
+	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
+	$('#ecto_gen').html('gold/s: ' + num);
+	if (player.money > 1000) {
+		$('#click_button').hide();
+	}
+	else if (player.money < 1000) {
+		$('#click_button').show();
+	}
+}
+
+//generatres blood overtime, passing in batteries in use
+slo.bloodGenerator = function(num) {
+	if (num * 2 <= player.money) {
+	player.gunk = player.gunk + num*2;
+	player.money = player.money - num*2;
+	$('#blood').html("You have " + player.gunk + " gunk");
+	$('#blood_gen').html('gunk/s: ' + num*2);
+	}
+}
+
+slo.lightFire = function() {
+	$('#cabin_rest').show();
+	$('#location_text').html('The fire is roaring.  You may now rest here freely.');
+}
+
+slo.magicDoor = function() {
+	if (inventoryObject.rune == true) {
+		$('#rune_true').css('display', 'inline');
+		$('#rune_false').css('display', 'none');
+		$('#magic_door').css('color', '#4FE8D6');
+	}
+	else {
+		$('#rune_false').css('display', 'inline-block');
+		$('#rune_true').css('display', 'none');
+	}
+}
+
+slo.locationSwitch = function(location) {
+		$(previousLocation.special).hide();
+		previousLocation = location;
+		$('#error').html('');
+		$('#location_ascii').hide();
+		$('#location_text').hide();
+		$(location.special).fadeIn('slow');
+		$('#location_ascii').html(location.ascii).fadeIn('slow');
+		$('#location_text').html(location.text).fadeIn('slow');
 }
 
 //loads dom elements & event listeners
@@ -327,150 +497,4 @@ window.onload = function() {
 		var buttonValue = $(this).attr('value');
 		factoryFunction(buttonValue);
 	})
-}
-
-var previousLocation = levelInfo;
-
-function locationSwitch(location) {
- 		$(previousLocation.special).hide();
- 		previousLocation = location;
- 		$('#error').html('');
- 		$('#location_ascii').hide();
- 		$('#location_text').hide();
- 		$(location.special).fadeIn('slow');
- 		$('#location_ascii').html(location.ascii).fadeIn('slow');
- 		$('#location_text').html(location.text).fadeIn('slow');
-}
-
-//generates ectoplasm on click
-function ectoplasmClick(num) {
-	player.money = player.money + num;
-	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
-}
-
-//generates ectoplasm overtime, passing in gears placed
-function ectoplasmGenerator(num) {
-	player.money = player.money + num*player.extraMoneyGen;
-	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
-	$('#ecto_gen').html('gold/s: ' + num);
-	if (player.money > 1000) {
-		$('#click_button').hide();
-	}
-	else if (player.money < 1000) {
-		$('#click_button').show();
-	}
-}
-
-//generatres blood overtime, passing in batteries in use
-function bloodGenerator(num) {
-	if (num * 2 <= player.money) {
-	player.gunk = player.gunk + num*2;
-	player.money = player.money - num*2;
-	$('#blood').html("You have " + player.gunk + " gunk");
-	$('#blood_gen').html('gunk/s: ' + num*2);
-	}
-}
-
-function lightFire() {
-	$('#cabin_rest').show();
-	$('#location_text').html('The fire is roaring.  You may now rest here freely.');
-}
-
-function magicDoor() {
-	if (inventoryObject.rune == true) {
-		$('#rune_true').css('display', 'inline');
-		$('#rune_false').css('display', 'none');
-		$('#magic_door').css('color', '#4FE8D6');
-	}
-	else {
-		$('#rune_false').css('display', 'inline-block');
-		$('#rune_true').css('display', 'none');
-	}
-}
-
-//main game loop, adds resources and hp
-function mainLoop() {
-	ectoplasmGenerator(player.gears);
-	if (player.health < player.maxHealth) {
-		healthRegen();
-		updateHealthBar();
-	}
-	fixHP();
-	if (batteryOn == true) {
-		bloodGenerator(player.batteries);
-	}
-	setTimeout(mainLoop, 1000);
-}
-
-function saveLoop() {
-	if (levelActive || shieldUsed || berserkUsed) {
-		console.log('cant save in level');
-	}
-	else {
-		saveGame();
-		console.log('game saved');
-	}
-	setTimeout(saveLoop, 5000);
-}
-
-//quest loop, called if level is active
-var questLoop = function(monster) {
-	if (bearCave) {
-		dropBearFall();
-	}
-	if (timeFrozen == false) {
-		moveInLevel(monster);		
-	}
-
-
-	if (timeFrozen) {
-		frozeTimer--;
-		$('#error').html('Time Frozen: ' + frozeTimer);
-		if (frozeTimer == 0) {
-			timeFrozen = false;
-		}
-	}
-	if (shieldUsed) {
-		shieldTimer--;
-		$('#error').html('Shield Left: ' +  shieldTimer);
-		if (shieldTimer == 0) {
-			shieldUsed = false;
-			player.reduction = oldReduction;
-		}
-	} 
-	if (berserkUsed) {
-		berserkTimer--;
-		$('#error').html('Berserk Left: ' + berserkTimer);
-		if (berserkTimer == 0) {
-			berserkUsed = false;
-			player.power = oldPower;
-		}
-	}
-
-	if (potionUsed) {
-		potionCD--;
-		$('#potionCDText').html("Potion Cooldown: " + potionCD);
-		if (potionCD == 0) {
-			potionUsed = false;
-			$('#error').html('');
-		}
-	}
-
-	if (levelActive == false) {
-		potionCD = 0;
-		potionUsed = false;
-		return;
-	}
-
-	setTimeout(function() {
-		questLoop(monster);
-	}, 500);
-}
-
-//not current being called
-function animateLoop() {
-	smokeAnimate();
-	blinkAnimate();
-
-	setTimeout(animateLoop, 750);
 }
