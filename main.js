@@ -11,15 +11,11 @@ var slo = []; // Main game object, slo = space lich omega
 
 //gamestate varble init
 slo.gameState = {
-		inverse: false,
-		batteryOn: true,
-		levelActive: false,
-		previousLocation: levelInfo,
-		count: 0,
-		flesh: 0,
-		};
-
-var fists, woodSword, ironSword;
+	inverse: false,
+	batteryOn: true,
+	levelActive: false,
+	previousLocation: levelInfo,
+};
 
 
 /******************************************************
@@ -30,7 +26,19 @@ var fists, woodSword, ironSword;
 slo.resetGame = function() {
 	var message = 'This will reset your entire playthrough, this is not reversible, are you sure?';
 	if (confirm(message)) {
-		stuffToShow = {
+		slo.resetStuffToShow();
+		slo.resetInventoryObjects();
+		slo.resetPlayer();
+
+		saveGame();
+		$('#error').html('Please refresh the window for the entire reset to work');
+		loadGame();
+
+	}
+};
+
+slo.resetStuffToShow = function() {
+	slo.stuffToShow = {
 			mapButton: false,
 			post_lich: false,
 			wood_sword: true,
@@ -88,9 +96,11 @@ slo.resetGame = function() {
 			tome_item: false,
 			end_button: false,
 			badEnd_button: false
-		}
+		};
+};
 
-		inventoryObject = {
+slo.resetInventoryObjects = function() {
+	slo.inventoryObject = {
 			weapon: swordObject.fists,
 			armor: armorObject.noArmor,
 			ironArmor: false,
@@ -130,11 +140,13 @@ slo.resetGame = function() {
 			beastClaw: false,
 			sharkTooth: false,
 			tome: false
-		}
+		};
+};
 
-		player = {
+slo.resetPlayer = function() {
+	slo.player = {
 			damage: swordObject.fists.damage,
-			reduction: inventoryObject.armor.reduction,
+			reduction: slo.inventoryObject.armor.reduction,
 			armorEnchant: this.reduction * this.armorEnchantVal,
 			swordEnchant: this.damage * this.swordEnchantVal,
 			camp: false,
@@ -175,35 +187,30 @@ slo.resetGame = function() {
 			extraMoneyGen: 1,
 			maximum: 100000,
 			parts: false
-		}
-		saveGame();
-		$('#error').html('Please refresh the window for the entire reset to work');
-		loadGame();
-
-	}
-}
+		};
+};
 
 //load game using local storage, runs necessary functions so that everything is the same it was before quitting
 slo.loadGame = function() {
 	if (!localStorage['player_save']) return;
 	var player_data = JSON.parse(atob(localStorage['player_save']));
-	player = player_data;
+	slo.player = slo.player_data;
 	var inventory_data = JSON.parse(atob(localStorage['inventory_save']));
-	inventoryObject = inventory_data;
+	slo.inventoryObject = inventory_data;
 	var show_data = JSON.parse(atob(localStorage['show_save']));
-	stuffToShow = show_data;
+	slo.stuffToShow = show_data;
 	showStuff();
 	updateWizardButtons();
 	equipSword();
-	$('#blood').html('You have ' + player.gunk + ' gunk');
-	$('#hp').html(player.health + '/' + player.maxHealth);
-	if (player.money > 1000) {
+	$('#blood').html('You have ' + slo.player.gunk + ' gunk');
+	$('#hp').html(slo.player.health + '/' + slo.player.maxHealth);
+	if (slo.player.money > 1000) {
 		$('#click_button').hide();
 	}
-	if (player.camp) {
+	if (slo.player.camp) {
 		campgroundAfterScenario();
 	}
-	if (player.postLich) {
+	if (slo.player.postLich) {
 		Store.ascii = Store.ascii3;
 		Main.special = '#future_special';
 		Map.special = '#future_map';
@@ -211,17 +218,17 @@ slo.loadGame = function() {
 		Wizard.text = 'Wow I havent seen you in awhile!';
 		Main.text = 'what happened..?'
 	}
-}
+};
 
 //save game to local storage
 slo.saveGame = function() {
-	localStorage['player_save'] = btoa(JSON.stringify(player));
-	localStorage['inventory_save'] = btoa(JSON.stringify(inventoryObject));
-	localStorage['show_save'] = btoa(JSON.stringify(stuffToShow));
-}
+	localStorage['player_save'] = btoa(JSON.stringify(slo.player));
+	localStorage['inventory_save'] = btoa(JSON.stringify(slo.inventoryObject));
+	localStorage['show_save'] = btoa(JSON.stringify(slo.stuffToShow));
+};
 
 slo.saveLoop = function() {
-	if (levelActive || shieldUsed || berserkUsed) {
+	if (slo.gameState.levelActive || shieldUsed || berserkUsed) {
 		console.log('cant save in level');
 	}
 	else {
@@ -229,24 +236,24 @@ slo.saveLoop = function() {
 		console.log('game saved');
 	}
 	setTimeout(saveLoop, 5000);
-}
+};
 
 /****************************************************
  * Game Loops
  ****************************************************/
 //main game loop, adds resources and hp
 slo.mainLoop = function() {
-	ectoplasmGenerator(player.gears);
-	if (player.health < player.maxHealth) {
+	ectoplasmGenerator(slo.player.gears);
+	if (slo.player.health < slo.player.maxHealth) {
 		healthRegen();
 		updateHealthBar();
 	}
 	fixHP();
-	if (batteryOn == true) {
-		bloodGenerator(player.batteries);
+	if (slo.gameState.batteryOn == true) {
+		bloodGenerator(slo.player.batteries);
 	}
 	setTimeout(mainLoop, 1000);
-}
+};
 
 //quest loop, called if level is active
 slo.questLoop = function(monster) {
@@ -270,7 +277,7 @@ slo.questLoop = function(monster) {
 		$('#error').html('Shield Left: ' +  shieldTimer);
 		if (shieldTimer == 0) {
 			shieldUsed = false;
-			player.reduction = oldReduction;
+			slo.player.reduction = oldReduction;
 		}
 	} 
 	if (berserkUsed) {
@@ -278,7 +285,7 @@ slo.questLoop = function(monster) {
 		$('#error').html('Berserk Left: ' + berserkTimer);
 		if (berserkTimer == 0) {
 			berserkUsed = false;
-			player.power = oldPower;
+			slo.player.power = oldPower;
 		}
 	}
 
@@ -291,7 +298,7 @@ slo.questLoop = function(monster) {
 		}
 	}
 
-	if (levelActive == false) {
+	if (slo.gameState.levelActive == false) {
 		potionCD = 0;
 		potionUsed = false;
 		return;
@@ -300,7 +307,7 @@ slo.questLoop = function(monster) {
 	setTimeout(function() {
 		questLoop(monster);
 	}, 500);
-}
+};
 
 //not current being called
 slo.animateLoop = function() {
@@ -308,45 +315,45 @@ slo.animateLoop = function() {
 	blinkAnimate();
 
 	setTimeout(animateLoop, 750);
-}
+};
 
 /************************************************
  * GUI Related
  ************************************************/
 slo.updateHealthBar = function() {
-	$('#hp').html(player.health.toFixed(2) + '/' + player.maxHealth);
-	$('#hp').css('width', player.health / player.maxHealth * 100 + '%');
+	$('#hp').html(slo.player.health.toFixed(2) + '/' + slo.player.maxHealth);
+	$('#hp').css('width', slo.player.health / slo.player.maxHealth * 100 + '%');
 }
 
 slo.healthRegen = function() {
-	player.health = player.health + player.regenVal;
+	slo.player.health = slo.player.health + slo.player.regenVal;
 }
 
 //generates ectoplasm on click
 slo.ectoplasmClick = function(num) {
-	player.money = player.money + num;
-	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
-}
+	slo.player.money = slo.player.money + num;
+	document.getElementById('ectoplasm').innerHTML = "You have " + slo.player.money + " gold";
+};
 
 //generates ectoplasm overtime, passing in gears placed
 slo.ectoplasmGenerator = function(num) {
-	player.money = player.money + num*player.extraMoneyGen;
-	document.getElementById('ectoplasm').innerHTML = "You have " + player.money + " gold";
+	slo.player.money = slo.player.money + num*slo.player.extraMoneyGen;
+	document.getElementById('ectoplasm').innerHTML = "You have " + slo.player.money + " gold";
 	$('#ecto_gen').html('gold/s: ' + num);
-	if (player.money > 1000) {
+	if (slo.player.money > 1000) {
 		$('#click_button').hide();
 	}
-	else if (player.money < 1000) {
+	else if (slo.player.money < 1000) {
 		$('#click_button').show();
 	}
-}
+};
 
 //generatres blood overtime, passing in batteries in use
 slo.bloodGenerator = function(num) {
-	if (num * 2 <= player.money) {
-	player.gunk = player.gunk + num*2;
-	player.money = player.money - num*2;
-	$('#blood').html("You have " + player.gunk + " gunk");
+	if (num * 2 <= slo.player.money) {
+	slo.player.gunk = slo.player.gunk + num*2;
+	slo.player.money = slo.player.money - num*2;
+	$('#blood').html("You have " + slo.player.gunk + " gunk");
 	$('#blood_gen').html('gunk/s: ' + num*2);
 	}
 }
@@ -357,7 +364,7 @@ slo.lightFire = function() {
 }
 
 slo.magicDoor = function() {
-	if (inventoryObject.rune == true) {
+	if (slo.inventoryObject.rune == true) {
 		$('#rune_true').css('display', 'inline');
 		$('#rune_false').css('display', 'none');
 		$('#magic_door').css('color', '#4FE8D6');
@@ -370,7 +377,7 @@ slo.magicDoor = function() {
 
 slo.locationSwitch = function(location) {
 		$(previousLocation.special).hide();
-		previousLocation = location;
+		slo.gameState.previousLocation = location;
 		$('#error').html('');
 		$('#location_ascii').hide();
 		$('#location_text').hide();
@@ -401,13 +408,13 @@ window.onload = function() {
  	// event listener to switch location
 
 	$('.location_button, .location_ascii').click(function() {
-		if (levelActive) {
+		if (slo.gameState.levelActive) {
 			$('#error').html('You must leave quest first');
 			return;
 		}
 		var buttonValue = $(this).attr('value');
 		var locationVal = locationObject[buttonValue];
-		if (buttonValue == 'DemonWizardElder' && player.demonVisit) {
+		if (buttonValue == 'DemonWizardElder' && slo.player.demonVisit) {
 			$('#error').html('The Demon Wizard Elder does not allow repeat visits');
 			return;
 		}

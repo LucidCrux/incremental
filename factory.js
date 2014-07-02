@@ -19,45 +19,47 @@ function factoryFunction(value) {
 }
 
 function createFlesh() {
-	if ((player.money > 0 ) && (player.gunk > 0)) {
-		if (player.money > player.gunk) {
-			flesh = player.gunk;
+	var flesh = 0;
+	
+	if ((slo.player.money > 0 ) && (slo.player.gunk > 0)) {
+		if (slo.player.money > slo.player.gunk) {
+			flesh = slo.player.gunk;
 		}
 		else {
-			flesh = player.money;
+			flesh = slo.player.money;
 		}
 		if (flesh > 5000) {
-			player.num = 7.5;
+			slo.player.num = 7.5;
 		}
 		if (flesh > 10000) {
-			player.num = 10;
+			slo.player.num = 10;
 		}
 		if (flesh > 50000) {
-			player.num = 20;
+			slo.player.num = 20;
 		}
 		if (flesh > 100000) {
-			player.num = 30;
+			slo.player.num = 30;
 		}
 		if (flesh > 200000) {
-			player.num = 50; 
+			slo.player.num = 50; 
 		}
-			player.money = player.money - flesh;
-			player.gunk = player.gunk - flesh;
-			player.maxHealth = player.maxHealth + Math.round(flesh / player.num);
+			slo.player.money = slo.player.money - flesh;
+			slo.player.gunk = slo.player.gunk - flesh;
+			slo.player.maxHealth = slo.player.maxHealth + Math.round(flesh / slo.player.num);
 			flesh = 0;
-			player.num = 5;
-		if (player.maxHealth > player.maximum) {
-			player.maxHealth = player.maximum;
+			slo.player.num = 5;
+		if (slo.player.maxHealth > slo.player.maximum) {
+			slo.player.maxHealth = slo.player.maximum;
 		}
 	}
 }
 
 //functions associated with the factory, placegears/usebatteries
 function plantSeed() {
-	if (inventoryObject.seed > 0) {
-		player.gears++;
-		inventoryObject.seed--;
-		$('#seeds_planted').html("Gears Placed: " + player.gears);
+	if (slo.inventoryObject.seed > 0) {
+		slo.player.gears++;
+		slo.inventoryObject.seed--;
+		$('#seeds_planted').html("Gears Placed: " + slo.player.gears);
 	}
 	else {
 		error.innerHTML = 'you have no gears';
@@ -65,10 +67,10 @@ function plantSeed() {
 }
 
 function plantAll() {
-	if (inventoryObject.seed > 0) {
-		player.gears = player.gears + inventoryObject.seed;
-		inventoryObject.seed = 0;
-		$('#seeds_planted').html("Gears Placed: " + player.gears);
+	if (slo.inventoryObject.seed > 0) {
+		slo.player.gears = slo.player.gears + slo.inventoryObject.seed;
+		slo.inventoryObject.seed = 0;
+		$('#seeds_planted').html("Gears Placed: " + slo.player.gears);
 	}
 	else {
  		error.innerHTML = 'you have no gears';
@@ -76,18 +78,18 @@ function plantAll() {
 }
 
 function batteryEnable() {
-	if (player.gears > 1) {
+	if (slo.player.gears > 1) {
 		$('#batteryButton').css('display', 'inline');
 		batteryDisplay = true;
-		batteryOn = true;;
+		slo.gameState.batteryOn = true;;
 	}
 }
 
 
 function useBattery() {
-	if (inventoryObject.battery > 0) {
-		player.batteries++;
-		inventoryObject.battery--;
+	if (slo.inventoryObject.battery > 0) {
+		slo.player.batteries++;
+		slo.inventoryObject.battery--;
 	}
 	else {
  		error.innerHTML = 'you have no batteries';
@@ -95,13 +97,13 @@ function useBattery() {
 }
 
 function turnOffBattery() {
-	if (batteryOn == false) {
-		batteryOn = true;
-		$('#blood_gen').html('gunk/s: ' + player.batteries*2);
+	if (slo.gameState.batteryOn == false) {
+		slo.gameState.batteryOn = true;
+		$('#blood_gen').html('gunk/s: ' + slo.player.batteries*2);
 		$('#turn_off').html('Turn Off Machine');
 	}
 	else {
-		batteryOn = false;
+		slo.gameState.batteryOn = false;
 		$('#blood_gen').html('The machine is off');
 		$('#turn_off').html('Turn On Machine');
 	}

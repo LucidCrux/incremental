@@ -33,7 +33,7 @@ function makeLevel(levelInp, monster, monsterCount, specialMonster, specialCount
 };
 
 function addMoney() {
-	player.money = player.money + gainedLoot;
+	slo.player.money = slo.player.money + gainedLoot;
 }
 
 //function for the player to move, moves player and monster forward if '_'
@@ -46,7 +46,7 @@ function moveInLevel(monstertest) {
 	if (monstertest.monster.name == 'Beast') {
 		beastCleave();
 	}
-	var player = 'Y';
+	var slo.player = 'Y';
 	if (level[i] == '_'); {
 		level[i] = 'Y';
 		level[i - 1] = '_';
@@ -75,13 +75,13 @@ function moveInLevel(monstertest) {
 
 	}
 	//level success, adds loot
-	if (i == level.length && levelActive) {
+	if (i == level.length && slo.gameState.levelActive) {
 		if (monstertest.text == hanger.text) {
 			$('#error').html('You find the space ship top and bottom pieces');
 
 		}
 		addMoney();
-		levelActive = false;
+		slo.gameState.levelActive = false;
 		monstertest.levelFinished = true;
 		$('#' + monstertest.levelUnlock).show();
 		monstertest.unlockSave();
@@ -113,7 +113,7 @@ function beastCleave() {
 		$('#location_text').html('');
 		beastCount = 0;
 		if (level[danger.levelLength - 1] == 'Y') {
-			player.health = player.health - 10000;
+			slo.player.health = slo.player.health - 10000;
 		}
 	}
 }
@@ -134,7 +134,7 @@ function lichBattle() {
 		$('#error').html('The Lich must recover his power, his damage is weakened');
 		$('#level_text').html('The lich must recover his power, his damage is weakened');
 		if (!shieldUsed) {
-			player.health = player.health - 50000;
+			slo.player.health = slo.player.health - 50000;
 		}
 		lich.damage = 10;
 	}
@@ -150,7 +150,7 @@ function lichBattle() {
 		$('#error').html('');
 		$('#level_text').html('');
 		if (level[finish.levelLength - 2] == 'Y') {
-			player.health = player.health - 50000;
+			slo.player.health = slo.player.health - 50000;
 		}
 	}
 	else if (lichCount > 20) {
@@ -161,11 +161,11 @@ function lichBattle() {
 
 function roundDamage(monster) {
 	armorEnchantRed();
-	if ((monster.damage - player.reduction - armorRed) < 0) {
-		player.health = player.health + player.swordHP;
+	if ((monster.damage - slo.player.reduction - armorRed) < 0) {
+		slo.player.health = slo.player.health + slo.player.swordHP;
 	}
 	else {
-		player.health = player.health - (monster.damage - player.reduction - armorRed) + player.swordHP;
+		slo.player.health = slo.player.health - (monster.damage - slo.player.reduction - armorRed) + slo.player.swordHP;
 	}
 }
 
@@ -175,14 +175,14 @@ function roundDamage(monster) {
 function battleTime(monster) {
 	armorEnchantRed();
 	swordEnchantDmg();
-	$('#player_stats').html('Player Dmg: ' + Math.round(player.power * (player.damage + enchantDmg)) + ' | Armor: ' + Math.round(player.reduction + armorRed));
+	$('#player_stats').html('Player Dmg: ' + Math.round(slo.player.power * (slo.player.damage + enchantDmg)) + ' | Armor: ' + Math.round(slo.player.reduction + armorRed));
 	monster.monsterInfo();
 	roundDamage(monster);
 
-	monster.health = monster.health - Math.round((player.damage + enchantDmg)*player.power);
+	monster.health = monster.health - Math.round((slo.player.damage + enchantDmg)*slo.player.power);
 	i--;
-	if (player.health <= 0) {
-		levelActive = false;
+	if (slo.player.health <= 0) {
+		slo.gameState.levelActive = false;
 		monster.health = monster.maxHealth;
 		$('#error').html('The ' + monster.name + ' killed you rip ;-;');
 		$('#error2').html('The ' + monster.name + ' killed you rip ;-;');
@@ -204,7 +204,7 @@ function battleTime(monster) {
 
 //leave quest, resets all quest related variables & shows/hide correct areas
 function leaveQuest() {
-	if (levelActive) {
+	if (slo.gameState.levelActive) {
 		$('#error').html('You abandon your quest, leaving anything found behind')
 	}
 	if (berserkUsed) {
@@ -216,7 +216,7 @@ function leaveQuest() {
 	}
 	$('#quest').hide();
 	$('#error2').html('');
-	levelActive = false;
+	slo.gameState.levelActive = false;
 	resetSpellUsed = false;
 	$('#location_div').show();
 	level = [0];
@@ -261,7 +261,7 @@ function dropBearFall() {
 //function to load all levels, takes in levelInfo object as parameter with
 //everything needed to form the level & show/hide the correct areas
 function loadLevel(levelInfo) {
- 	levelActive = true;
+	slo.gameState.levelActive = true;
  	var questName = levelInfo.name
  	var questAscii = '#' + questName + '_quest';
  	$('#quest_ascii').html(levelInfo.ascii);

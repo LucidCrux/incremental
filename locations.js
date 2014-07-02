@@ -12,7 +12,7 @@ function telescope(direction) {
 		case 'right':
 			$('#location_ascii').html(Skyscraper.ascii2);
 			$('#location_text').html('Looks like there is a cabin in the woods over there, should probably check that out');
-			stuffToShow.forest_map = true;
+			slo.stuffToShow.forest_map = true;
 			$('#forest_map').show();
 			break;
 		case 'telescope':
@@ -26,25 +26,25 @@ function telescope(direction) {
 
 function showLab() {
 	$('#lab_map').show();
-	stuffToShow.lab_map = true;
+	slo.stuffToShow.lab_map = true;
 }
 
 function spaceShipCheck() {
-	if (player.parts) {
+	if (slo.player.parts) {
 		$('#phase3').show();
 		$('#rocket_launch').show();
-		stuffToShow.phase3 = true;
-		stuffToShow.rocket_launch = true;
+		slo.stuffToShow.phase3 = true;
+		slo.stuffToShow.rocket_launch = true;
 	}
 }
 
 //cant visit demon more than once
 function noDemon() {
-	player.demonVisit = true;
+	slo.player.demonVisit = true;
 }
 
 function flipperCheck() {
-	if (inventoryObject.flippers) {
+	if (slo.inventoryObject.flippers) {
 		$('#flipper_on').show();
 		$('#location_text').html('Good to go!');
 	}
@@ -56,14 +56,14 @@ function flipperCheck() {
 function reflectingPoolChoice(poolChoice) {
 	if (poolChoice ==  'health') {
 		$('#error').html('Your sword now grants life on hit');
-		player.swordHP = player.swordHP + 0.25;
+		slo.player.swordHP = slo.player.swordHP + 0.25;
 	}
 	else if (poolChoice == 'power') {
-		player.power = player.power + 0.25;
+		slo.player.power = slo.player.power + 0.25;
 		$('#error').html('Your weapons now deal extra damage');
 	}
 	else {
-		player.freedom = player.freedom + 1;
+		slo.player.freedom = slo.player.freedom + 1;
 		$('#error').html('You now gain extra money from monsters');
 	}
 	$('.pool_button').hide();
@@ -87,28 +87,28 @@ function searchCamp() {
 function campConfess() {
 	$('#man_text').html('You took my stuff? Guess <br> You are paying extra!');
 	$('#confess_button').hide();
-	player.confess = true;
+	slo.player.confess = true;
 }
 
 //raises price based on outcome of scenario, then updates button
 function raiseRestPrice() {
-	if (player.confess) {
-		player.restPrice = player.restPrice * 3;
+	if (slo.player.confess) {
+		slo.player.restPrice = slo.player.restPrice * 3;
 	}
-	else if (player.thief) {
-		player.restPrice = player.restPrice * 2
+	else if (slo.player.thief) {
+		slo.player.restPrice = slo.player.restPrice * 2
 	}
 	else {
-		player.restPrice = 0;
+		slo.player.restPrice = 0;
 	}
-	$('#rest').html('Rest(' + player.restPrice + ')');
-	$('#rest_perm').html('Rest(' + player.restPrice + ')');
+	$('#rest').html('Rest(' + slo.player.restPrice + ')');
+	$('#rest_perm').html('Rest(' + slo.player.restPrice + ')');
 }
 
 
 
 function cabinRest() {
-	player.health = player.maxHealth;
+	slo.player.health = slo.player.maxHealth;
 	updateHealthBar();
 	$('#location_text').html('You are fully rested');
 }
@@ -116,13 +116,13 @@ function cabinRest() {
 //rest if you have the money to give full hp, otherwise error
 function campRest() {
 	campgroundAfterScenario();
-	if (levelActive) {
-		$('#error').html('hey you cant rest in battle!');
+	if (slo.gameState.levelActive) {
+		$('#error').html('You can\'t rest in battle!');
 		return;
 	}
-	if (player.money > player.restPrice) {
-		player.money = player.money - player.restPrice;
-		player.health = player.maxHealth - 1;
+	if (slo.player.money > slo.player.restPrice) {
+		slo.player.money = slo.player.money - slo.player.restPrice;
+		slo.player.health = slo.player.maxHealth - 1;
 		$('#error').html('You are fully rested');
 		raiseRestPrice();
 	}
@@ -135,14 +135,14 @@ function campRest() {
 function campgroundAfterScenario() {
 	Camp.text = 'The fire is roaring';
 	$('#rest_perm').show();
-	$('#rest_perm').html('Rest (' + player.restPrice + ')');
+	$('#rest_perm').html('Rest (' + slo.player.restPrice + ')');
 	$('#camp_scenario').hide();
 	$('#camp_use').show();
-	stuffToShow.rest_perm = true;
-	if (player.confess) {
+	slo.stuffToShow.rest_perm = true;
+	if (slo.player.confess) {
 		$('#man_text').html('Hey jerk want to rest? <br> Special Price..');		
 	}
-	else if (player.thief) {
+	else if (slo.player.thief) {
 		$('#man_text').show().html('Sorry but someone stole my supplies, Im going <br> to have to charge for you to rest here');
 	    $('#confess').show();
 	}
@@ -158,15 +158,15 @@ function campgroundAfterScenario() {
 //adds the loot to the thieves inventory
 //immediately leaves campground
 function stealItems() {
-	player.gunk = player.gunk + 500;
-	player.money = player.money + 5000;
+	slo.player.gunk = slo.player.gunk + 500;
+	slo.player.money = slo.player.money + 5000;
 	$('#camp_scenario').hide();
 	$('#camp_use').show();
-	player.restPrice = 1;
-	player.thief = true;
+	slo.player.restPrice = 1;
+	slo.player.thief = true;
 	locationSwitch(Map);
 	$('#error').html('You take the items and leave, gained 5000 gold and 500 gunk');
-	player.camp = true;
+	slo.player.camp = true;
 	campgroundAfterScenario();
 }
 
@@ -194,8 +194,8 @@ function campgroundWait() {
 		$('#man').show();
 		$('#man_text').show();
 		$('#camp_use').show();
-		player.camp = true;
-		player.restPrice = 0;
+		slo.player.camp = true;
+		slo.player.restPrice = 0;
 	}
 	}, 5000);
 	
@@ -206,8 +206,8 @@ function labScenario(buttonValue) {
 	console.log(buttonValue + ' the value');
 	if (buttonValue == 'grab') {
 		$('#location_text').html('Oh okay heres a fresh batch for you');
-		inventoryObject.shipFuel = true;
-		player.parts = true;
+		slo.inventoryObject.shipFuel = true;
+		slo.player.parts = true;
 		('#laboratory').hide();
 	}
 	else if (buttonValue == 'pass') {
@@ -215,8 +215,8 @@ function labScenario(buttonValue) {
 	}
 	else {
 		$('#location_text').html('You kill the Chemist in one hit, she was defenseless, you grab the rocket fuel off her corpse');
-		inventoryObject.shipFuel = true;
-		player.parts = true;
+		slo.inventoryObject.shipFuel = true;
+		slo.player.parts = true;
 		$('#location_ascii').html(Laboratory.ascii2);
 		$('#laboratory').hide();
 	}
@@ -241,20 +241,20 @@ function fishReel() {
 }
 
 function lootBait() {
-	if (inventoryObject.bait) {
+	if (slo.inventoryObject.bait) {
 		$('#error').html('You already found some bait, leave some for the other anglers!');
 	}
 	else {
 		$('#location_text').html('Hmm found some bait in the bushes!');
-		inventoryObject.bait = true;
+		slo.inventoryObject.bait = true;
 	}
 }
 var fishCaught;
 var caught = false;
 
 function checkFish() {
-	if (player.bigFish) {
-		inventoryObject.flippers = true;
+	if (slo.player.bigFish) {
+		slo.inventoryObject.flippers = true;
 		Fish.text = 'Hope those flippers are helping you out, maybe check out the sea?';
 		$('#location_text').html('Wow check out that fish! Here you go take these flippers you deserve them!');
 	}
@@ -267,7 +267,7 @@ function checkFish() {
 
 function fishCatch() {
 	$('#location_ascii').html(Fish.ascii3);
-	if (inventoryObject.bait) {
+	if (slo.inventoryObject.bait) {
 		fishCaught = 20;
 	}
 	else {
@@ -279,7 +279,7 @@ function fishCatch() {
 	}
 	else {
 		$('#location_text').html('Wow! a ' + fishCaught + ' pound fish! That will show the fisherman!');
-		player.bigFish = true;
+		slo.player.bigFish = true;
 	}
 	caught = false;
 	$('#reel').hide();
@@ -315,19 +315,19 @@ function fishEncounter() {
 function wizardEnchant(buttonValue) {
 	switch (buttonValue) {
 		case 'sword':
-			if (enoughMoney(player.swordEnchantCost)) {
-				player.swordEnchantVal = player.swordEnchantVal + 0.1;
-				player.swordEnchantCost = player.swordEnchantCost * 3;
-				$('#enchantDmg').html('Enchant Sword (' + player.swordEnchantCost + ')');
+			if (enoughMoney(slo.player.swordEnchantCost)) {
+				slo.player.swordEnchantVal = slo.player.swordEnchantVal + 0.1;
+				slo.player.swordEnchantCost = slo.player.swordEnchantCost * 3;
+				$('#enchantDmg').html('Enchant Sword (' + slo.player.swordEnchantCost + ')');
 			break;
 			}
 			break;
 
 		case 'armor': 
-			if (enoughMoney(player.armorEnchantCost)) {
-				player.armorEnchantVal = player.armorEnchantVal + 0.1;
-				player.armorEnchantCost = player.armorEnchantCost * 3;
-				$('#enchantRed').html('Enchant Armor (' + player.armorEnchantCost + ')');
+			if (enoughMoney(slo.player.armorEnchantCost)) {
+				slo.player.armorEnchantVal = slo.player.armorEnchantVal + 0.1;
+				slo.player.armorEnchantCost = slo.player.armorEnchantCost * 3;
+				$('#enchantRed').html('Enchant Armor (' + slo.player.armorEnchantCost + ')');
 			break;
 			}
 			break;
@@ -335,17 +335,17 @@ function wizardEnchant(buttonValue) {
 }
 
 function updateWizardButtons() {
-	$('#enchantDmg').html('Enchant Sword (' + player.swordEnchantCost + ')');
-	$('#enchantRed').html('Enchant Armor (' + player.armorEnchantCost + ')');
+	$('#enchantDmg').html('Enchant Sword (' + slo.player.swordEnchantCost + ')');
+	$('#enchantRed').html('Enchant Armor (' + slo.player.armorEnchantCost + ')');
 }
 
 function enoughMoney(cost) {
-	if (cost > player.money) {
+	if (cost > slo.player.money) {
 		$('#error').html('Not enough money!');
 		return false;
 	}
 	else {
-		player.money = player.money - cost;
+		slo.player.money = slo.player.money - cost;
 		return true;
 	}
 }
@@ -376,12 +376,12 @@ function wizardQuestion() {
 }
 
 function monkCheck() {
-	if (player.monkVisit) {
+	if (slo.player.monkVisit) {
 		$('#location_text').html('The monk is no longer here');
 		$('#greet_monk').hide();
 		$('#location_ascii').html('');
 	}
-	else if (player.sinChoosen) {
+	else if (slo.player.sinChoosen) {
 		$('#location_text').html('Thank you for rescuing me, unfortunately I cant teach someone afflicted with the demons mark and have nothing else to offer');
 		$('#kill_monk').show();	
 	}
@@ -389,7 +389,7 @@ function monkCheck() {
 		$('#location_text').html('Thank you for rescuing me, I can teach you the practice of meditation');
 		$('#learn_monk').show();
 	}
-	stuffToShow.cave = true;
+	slo.stuffToShow.cave = true;
 	$('#cave').show();
 }
 
@@ -404,12 +404,12 @@ function monkAction(buttonValue) {
 	else {
 		$('#location_text').html('');
 		$('#error').html('You gain +10% armor & sword enchants');
-		player.swordEnchantVal = player.swordEnchantVal + 0.1;
-		player.armorEnchantVal = player.armorEnchantVal + 0.1;
+		slo.player.swordEnchantVal = slo.player.swordEnchantVal + 0.1;
+		slo.player.armorEnchantVal = slo.player.armorEnchantVal + 0.1;
 		$('#learn_monk').hide();
 		$('#monk_button').hide();
 	}
-	player.monkVisit = true;
+	slo.player.monkVisit = true;
 }
 
 function lichEncounter(buttonValue) {
@@ -438,5 +438,5 @@ function lichAttack() {
 	Main.text = 'what happened..?'
 	$('#lich_attack').hide();
 	$('#continue').show();
-	player.postLich = true;
+	slo.player.postLich = true;
 }

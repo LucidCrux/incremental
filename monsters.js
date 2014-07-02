@@ -13,7 +13,7 @@ function Monster() {
 	this.monsterMoney = 1,
 	this.loot = function() {
 		var lootDropped = 50;
-		gainedLoot = Math.floor(lootDropped*this.monsterMoney*player.freedom + gainedLoot);
+		gainedLoot = Math.floor(lootDropped*this.monsterMoney*slo.player.freedom + gainedLoot);
 		$('#loot').html('You have gained ' + gainedLoot + ' gold');
 	}
 	this.monsterInfo = function() {
@@ -27,7 +27,7 @@ function Monster() {
 		var randomNum = Math.round(Math.random()*100);
 		var lootCheck = this.specialLoot;
 		lootCheck = lootCheck.replace(/"/g, "");
-		if (randomNum < this.dropChance && inventoryObject[lootCheck] == false) {
+		if (randomNum < this.dropChance && slo.inventoryObject[lootCheck] == false) {
 			 itemEquip(this.specialLoot);
 			 lootmessage = 'You found a(n) ' + this.itemName;
 			 $('#special_loot').html(lootmessage);

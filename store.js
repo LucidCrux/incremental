@@ -2,69 +2,9 @@ var potionUsed = false;
 var potionCD = 0;
 var timeFrozen = false;
 
-var stuffToShow = {
-	mapButton: false,
-	post_lich: false,
-	wood_sword: true,
-	iron_sword: false,
-	diamond_sword: false,
-	iron_armor: true,
-	diamond_armor: false,
-	mapListing: true,
-	pool_use: true,
-	den: false,
-	wizard_button: false,
-	camp_scenario: true,
-	camp_use: false,
-	man: false,
-	figure: false,
-	mine: false,
-	depths: false,
-	tower_map: false,
-	upper: false,
-	top: false,
-	monk_button: false,
-	den: false,
-	wizard_button: false,
-	armory: false,
-	throne: false,
-	lich: false,
-	cabin: false,
-	cabin_map: false,
-	sewer: false,
-	prison: false,
-	tunnel: false,
-	danger: false,
-	laboratory: false,
-	hanger: false,
-	rest_perm: false,
-	cave: false,
-	castle: false,
-	wizard_home: false,
-	forest_map: false,
-	lab_map: false,
-	phase3: false,
-	rocket_launch: false,
-	miningPick_item: false,
-	staff_item: false,
-	lifeGem_item: false,
-	hood_item: false,
-	miniBear_item: false,
-	skull_item: false,
-	trollHair_item: false,
-	skullStaff_item: false,
-	stickySlime_item: false,
-	pizza_item: false,
-	robe_item: false,
-	riotShield_item: false,
-	tome_item: false,
-	end_button: false,
-	badEnd_button: false
-}
-
 function showStuff() {
-for (var key in stuffToShow) {
-	var obj = stuffToShow[key];
+for (var key in slo.stuffToShow) {
+	var obj = slo.stuffToShow[key];
 	if (obj) {
 		$('#' + key).show();
 	}
@@ -140,189 +80,148 @@ var armorObject = {
 }
 
 //inventory
-var inventoryObject = {
-	weapon: swordObject.fists,
-	armor: armorObject.noArmor,
-	ironArmor: false,
-	diamondArmor: false,
-	knightsArmor: false,
-	jailOgreHide: false,
-	astronautSuit: false,
-	healthPotion: 10,
-	manaPotion: 0,
-	seed: 0,
-	map: false,
-	battery: 0,
-	rune: false,
-	sin: false,
-	ticket: false,
-	bait: false,
-	flippers: false,
-	shipBase: true,
-	shipTop: false,
-	shipFuel: false,
-	miningPick: false,
-	staff: false,
-	lifeGem: false,
-	hood: false,
-	miniBear: false,
-	skull: false,
-	trollHair: false,
-	skullStaff: false,
-	stickySlime: false,
-	pizza: false,
-	robe: false,
-	riotShield: false,
-	spiralSword: false,
-	diamondSword: false,
-	ironSword: false,
-	woodSword: false,
-	beastClaw: false,
-	sharkTooth: false,
-	tome: false
-}
 
 function itemEquip(item) {
 	console.log(item + '  test');
 	switch (item) {
 		case 'miningPick':
-			if (!inventoryObject.miningPick) {
-				player.freedom = player.freedom + 0.1;
-				inventoryObject.miningPick = true;
-				stuffToShow.miningPick_item = true;
+			if (!slo.inventoryObject.miningPick) {
+				slo.player.freedom = slo.player.freedom + 0.1;
+				slo.inventoryObject.miningPick = true;
+				slo.stuffToShow.miningPick_item = true;
 			}
 			
 			break;
 		case 'staff':
-			if (!inventoryObject.staff) {
-				player.swordEnchantVal = player.swordEnchantVal + 0.05;
-				inventoryObject.staff = true;
-				stuffToShow.staff_item = true;
+			if (!slo.inventoryObject.staff) {
+				slo.player.swordEnchantVal = slo.player.swordEnchantVal + 0.05;
+				slo.inventoryObject.staff = true;
+				slo.stuffToShow.staff_item = true;
 			}
 			
 			break;
 		case 'lifeGem':
-			if (!inventoryObject.lifeGem) {
-				player.regenVal = player.regenVal + 0.75;
-				inventoryObject.lifeGem = true;
-				stuffToShow.lifeGem_item = true;
+			if (!slo.inventoryObject.lifeGem) {
+				slo.player.regenVal = slo.player.regenVal + 0.75;
+				slo.inventoryObject.lifeGem = true;
+				slo.stuffToShow.lifeGem_item = true;
 			}
 			
 			break;
 		case 'hood':
-			if (!inventoryObject.hood) {
-				player.swordEnchantVal = player.swordEnchantVal + 0.1;
-				inventoryObject.hood = true;
-				stuffToShow.hood_item = true;
+			if (!slo.inventoryObject.hood) {
+				slo.player.swordEnchantVal = slo.player.swordEnchantVal + 0.1;
+				slo.inventoryObject.hood = true;
+				slo.stuffToShow.hood_item = true;
 			}
 			
 			break;
 		case 'miniBear':
-			if (!inventoryObject.miniBear) {
-				player.freedom = player.freedom + 0.2;
-				inventoryObject.miniBear = true;
-				stuffToShow.miniBear_item = true;
+			if (!slo.inventoryObject.miniBear) {
+				slo.player.freedom = slo.player.freedom + 0.2;
+				slo.inventoryObject.miniBear = true;
+				slo.stuffToShow.miniBear_item = true;
 			}
 
 			break;
 		case 'skull':
-			if (!inventoryObject.skull) {
-				player.swordHP = player.swordHP + 0.1;
-				inventoryObject.skull = true;
-				stuffToShow.skull_item = true;
+			if (!slo.inventoryObject.skull) {
+				slo.player.swordHP = slo.player.swordHP + 0.1;
+				slo.inventoryObject.skull = true;
+				slo.stuffToShow.skull_item = true;
 			}
 
 			break;
 		case 'trollHair':
-			if (!inventoryObject.trollHair) {
-				player.armorEnchantVal = player.armorEnchantVal + 0.1;
-				inventoryObject.trollHair = true;
-				stuffToShow.trollHair_item = true;
+			if (!slo.inventoryObject.trollHair) {
+				slo.player.armorEnchantVal = slo.player.armorEnchantVal + 0.1;
+				slo.inventoryObject.trollHair = true;
+				slo.stuffToShow.trollHair_item = true;
 			}
 			break;
 		case 'skullStaff':
-			if (!inventoryObject.skullStaff) {
-				player.swordEnchantVal = player.swordEnchantVal + 0.05;
-				player.armorEnchantVal = player.armorEnchantVal + 0.05;
-				player.regenVal = player.regenVal + 2.5;
-				inventoryObject.skullStaff = true;
-				stuffToShow.skullStaff_item = true;
+			if (!slo.inventoryObject.skullStaff) {
+				slo.player.swordEnchantVal = slo.player.swordEnchantVal + 0.05;
+				slo.player.armorEnchantVal = slo.player.armorEnchantVal + 0.05;
+				slo.player.regenVal = slo.player.regenVal + 2.5;
+				slo.inventoryObject.skullStaff = true;
+				slo.stuffToShow.skullStaff_item = true;
 			}
 			break;
 		case 'stickySlime':
-			if (!inventoryObject.stickySlime) {
-				player.extraMoneyGen = 2;
-				inventoryObject.stickySlime = true;
-				stuffToShow.stickySlime_item = true;
+			if (!slo.inventoryObject.stickySlime) {
+				slo.player.extraMoneyGen = 2;
+				slo.inventoryObject.stickySlime = true;
+				slo.stuffToShow.stickySlime_item = true;
 			}
 			else {
 				$('#special_loot').html('---');
 			}
 			break;
 		case 'pizza':
-			if (!inventoryObject.pizza) {
-				player.maxHealth = player.maxHealth + 420;
-				inventoryObject.pizza = true;
-				player.maximum = 100420;
-				stuffToShow.pizza_item = true;
+			if (!slo.inventoryObject.pizza) {
+				slo.player.maxHealth = slo.player.maxHealth + 420;
+				slo.inventoryObject.pizza = true;
+				slo.player.maximum = 100420;
+				slo.stuffToShow.pizza_item = true;
 			}
 			break;
 		case 'robe':
-			if (!inventoryObject.robe) {
-				player.regenVal = player.regenVal + 5;
-				inventoryObject.robe = true;
-				stuffToShow.robe_item = true;
+			if (!slo.inventoryObject.robe) {
+				slo.player.regenVal = slo.player.regenVal + 5;
+				slo.inventoryObject.robe = true;
+				slo.stuffToShow.robe_item = true;
 			}
 			break;
 		case 'riotShield':
-			if (!inventoryObject.riotShield) {
-				player.armorEnchantVal = player.armorEnchantVal + 0.25;
-				inventoryObject.riotShield = true;
-				stuffToShow.riotShield_item = true;
+			if (!slo.inventoryObject.riotShield) {
+				slo.player.armorEnchantVal = slo.player.armorEnchantVal + 0.25;
+				slo.inventoryObject.riotShield = true;
+				slo.stuffToShow.riotShield_item = true;
 			}
 			break;
 		case 'beastClaw':
-			if (!inventoryObject.beastClaw) {
-				inventoryObject.beastClaw = true;
+			if (!slo.inventoryObject.beastClaw) {
+				slo.inventoryObject.beastClaw = true;
 				equipSword();
 			}
 			break;
 		case 'spaceSword':
-			if (!inventoryObject.spiralSword) {
-				inventoryObject.spiralSword = true;
+			if (!slo.inventoryObject.spiralSword) {
+				slo.inventoryObject.spiralSword = true;
 				equipSword();
 			}
 			break;
 		case 'sharkTooth':
-			if (!inventoryObject.sharkTooth) {
-				inventoryObject.sharkTooth = true;
+			if (!slo.inventoryObject.sharkTooth) {
+				slo.inventoryObject.sharkTooth = true;
 				equipSword();
 			}
 			break;
 		case 'tome':
-			if (!inventoryObject.tome) {
-				inventoryObject.tome = true;
-				player.regenVal = player.regenVal + 1;
-				player.swordHP = player.swordHP + 0.1;
-				player.maxHealth = player.maxHealth + 500;
-				stuffToShow.tome_item = true;
+			if (!slo.inventoryObject.tome) {
+				slo.inventoryObject.tome = true;
+				slo.player.regenVal = slo.player.regenVal + 1;
+				slo.player.swordHP = slo.player.swordHP + 0.1;
+				slo.player.maxHealth = slo.player.maxHealth + 500;
+				slo.stuffToShow.tome_item = true;
 			}
 			break;
 		case 'knightsArmor':
-			if (!inventoryObject.knightsArmor) {
-				inventoryObject.knightsArmor = true;
+			if (!slo.inventoryObject.knightsArmor) {
+				slo.inventoryObject.knightsArmor = true;
 				equipArmor();
 			}
 			break;
 		case 'jailOgreHide':
-			if (!inventoryObject.jailOgreHide) {
-				inventoryObject.jailOgreHide = true;
+			if (!slo.inventoryObject.jailOgreHide) {
+				slo.inventoryObject.jailOgreHide = true;
 				equipArmor();
 			}
 			break;
 		case 'astronautSuit':
-			if (!inventoryObject.astronautSuit) {
-				inventoryObject.astronautSuit = true;
+			if (!slo.inventoryObject.astronautSuit) {
+				slo.inventoryObject.astronautSuit = true;
 				equipArmor();
 			}
 			break;
@@ -333,150 +232,103 @@ function itemEquip(item) {
 }
 
 function equipArmor() {
-	if (inventoryObject.astronautSuit) {
-		inventoryObject.armor = armorObject.astronautSuit;
-		player.reduction = armorObject.astronautSuit.reduction;
+	if (slo.inventoryObject.astronautSuit) {
+		slo.inventoryObject.armor = armorObject.astronautSuit;
+		slo.player.reduction = armorObject.astronautSuit.reduction;
 	}
-	else if (inventoryObject.jailOgreHide) {
-		inventoryObject.armor = armorObject.jailOgreHide;
-		player.reduction = armorObject.jailOgreHide.reduction;
+	else if (slo.inventoryObject.jailOgreHide) {
+		slo.inventoryObject.armor = armorObject.jailOgreHide;
+		slo.player.reduction = armorObject.jailOgreHide.reduction;
 	}
-	else if (inventoryObject.knightsArmor) {
-		inventoryObject.armor = armorObject.knightsArmor;
-		player.reduction = armorObject.knightsArmor.reduction;
+	else if (slo.inventoryObject.knightsArmor) {
+		slo.inventoryObject.armor = armorObject.knightsArmor;
+		slo.player.reduction = armorObject.knightsArmor.reduction;
 	}
-	else if (inventoryObject.diamondArmor) {
-		inventoryObject.armor = armorObject.diamondArmor;
-		player.reduction = armorObject.diamondArmor.reduction;
+	else if (slo.inventoryObject.diamondArmor) {
+		slo.inventoryObject.armor = armorObject.diamondArmor;
+		slo.player.reduction = armorObject.diamondArmor.reduction;
 	}
-	else if (inventoryObject.ironArmor) {
-		inventoryObject.armor = armorObject.ironArmor;
-		player.reduction = armorObject.ironArmor.reduction;
+	else if (slo.inventoryObject.ironArmor) {
+		slo.inventoryObject.armor = armorObject.ironArmor;
+		slo.player.reduction = armorObject.ironArmor.reduction;
 	}
 }
 
 function equipSword() {
-	if (inventoryObject.spiralSword) {
-		inventoryObject.weapon = swordObject.spiralSword;
-		player.damage = swordObject.spiralSword.damage;
+	if (slo.inventoryObject.spiralSword) {
+		slo.inventoryObject.weapon = swordObject.spiralSword;
+		slo.player.damage = swordObject.spiralSword.damage;
 	}
-	else if (inventoryObject.beastClaw) {
-		inventoryObject.weapon = swordObject.beastClawSword;
-		player.damage = swordObject.beastClawSword.damage;
+	else if (slo.inventoryObject.beastClaw) {
+		slo.inventoryObject.weapon = swordObject.beastClawSword;
+		slo.player.damage = swordObject.beastClawSword.damage;
 	}
-	else if (inventoryObject.sharkTooth) {
-		inventoryObject.weapon = swordObject.sharkToothSword;
-		player.damage = swordObject.sharkToothSword.damage;
+	else if (slo.inventoryObject.sharkTooth) {
+		slo.inventoryObject.weapon = swordObject.sharkToothSword;
+		slo.player.damage = swordObject.sharkToothSword.damage;
 	}
-	else if (inventoryObject.diamondSword) {
-		inventoryObject.weapon = swordObject.diamondSword;
-		player.damage = swordObject.diamondSword.damage;
+	else if (slo.inventoryObject.diamondSword) {
+		slo.inventoryObject.weapon = swordObject.diamondSword;
+		slo.player.damage = swordObject.diamondSword.damage;
 	}
-	else if (inventoryObject.ironSword) {
-		inventoryObject.weapon = swordObject.ironSword;
-		player.damage = swordObject.ironSword.damage;
+	else if (slo.inventoryObject.ironSword) {
+		slo.inventoryObject.weapon = swordObject.ironSword;
+		slo.player.damage = swordObject.ironSword.damage;
 	}
-	else if (inventoryObject.woodSword) {
-		inventoryObject.weapon = swordObject.woodSword;
-		player.damage = swordObject.woodSword.damage;
+	else if (slo.inventoryObject.woodSword) {
+		slo.inventoryObject.weapon = swordObject.woodSword;
+		slo.player.damage = swordObject.woodSword.damage;
 	}
-}
-
-
-
-var player = {
-	damage: swordObject.fists.damage,
-	reduction: inventoryObject.armor.reduction,
-	armorEnchant: this.reduction * this.armorEnchantVal,
-	swordEnchant: this.damage * this.swordEnchantVal,
-	camp: false,
-	power: 1,
-	gears: 1,
-	batteries: 0,
-	money: 0,
-	gunk: 0,
-	swordEnchantVal: 0,
-	armorEnchantVal: 0,
-	swordEnchantCost: 1000,
-	armorEnchantCost: 1000,
-	monkVisit: false,
-	postLich: false,
-	restPrice: 0,
-	thief: false,
-	confess: false,
-	demonVisit: false,
-	swordHP: 0,
-	health: 100.00,
-	maxHealth: 100,
-	bigFish: false,
-	regenVal: 0.25,
-	freedom: 1,
-	num: 5,
-	sin_Choosen: false,
-	potionCost: 25,
-	manaCost: 25,
-	gearCost: 200,
-	runeCost: 5,
-	batteryCost: 2000,
-	teleport: false,
-	reset: false,
-	freeze: false,
-	berserk: false,
-	shield: false,
-	figure: false,
-	extraMoneyGen: 1,
-	maximum: 100000,
-	parts: false
 }
 
 var enchantDmg = 0;
 var armorRed = 0;
 
 function swordEnchantDmg() {
-	enchantDmg = player.damage * player.swordEnchantVal;
+	enchantDmg = slo.player.damage * slo.player.swordEnchantVal;
 	return enchantDmg;
 }
 
 function armorEnchantRed() {
-	armorRed = player.reduction * player.armorEnchantVal;
+	armorRed = slo.player.reduction * slo.player.armorEnchantVal;
 	return armorRed;
 }
 
 function fixHP() {
-	if (player.health > player.maxHealth) {
-		player.health = player.maxHealth;
+	if (slo.player.health > slo.player.maxHealth) {
+		slo.player.health = slo.player.maxHealth;
 		updateHealthBar();
 	}
-    else if (player.health < 0) {
-		player.health = 0;
+    else if (slo.player.health < 0) {
+		slo.player.health = 0;
 	}
 }
 
 function useHealthPotion() {
-	if (inventoryObject.healthPotion == 0) {
+	if (slo.inventoryObject.healthPotion == 0) {
 		$('#error').html('No Health Potions ;-;');
 	}
 	else if (potionUsed) {
 		$('#error').html('Potions are on Cooldown!');
 	}
 	else {
-		if (player.health >= player.maxHealth) {
+		if (slo.player.health >= slo.player.maxHealth) {
 			$('#error').html('You already have full health dont be silly');
 		}
 		else {		
-			player.health = player.health + player.maxHealth*0.2;
+			slo.player.health = slo.player.health + slo.player.maxHealth*0.2;
 			potionUsed = true;
 			potionCD = 15;
-			inventoryObject.healthPotion--;
+			slo.inventoryObject.healthPotion--;
 			updateHealthBar();
 			inventoryList();
-			$('#health_potion_button').html('Use HP(' + inventoryObject.healthPotion + ')');
+			$('#health_potion_button').html('Use HP(' + slo.inventoryObject.healthPotion + ')');
 		}
 	}
 }
 
 function useTeleportPotion() {
-	if (inventoryObject.teleportPotion == 0) {
+	if (slo.inventoryObject.teleportPotion == 0) {
 		$('#error').html('No magic runes ;-;');
 	}
 	else if (potionUsed) {
@@ -493,7 +345,7 @@ function useTeleportPotion() {
 }
 
 function useFreezePotion() {
-	if (inventoryObject.rune == 0) {
+	if (slo.inventoryObject.rune == 0) {
 		$('#error').html('No magic runes ;-;');
 	}
 	else if (potionUsed) {
@@ -517,15 +369,15 @@ function useShield() {
 	else {
 		potionUsed = true;
 		shieldUsed = true;
-		oldReduction = player.reduction;
-		player.reduction = 100000000;
+		oldReduction = slo.player.reduction;
+		slo.player.reduction = 100000000;
 		shieldTimer = 3;
 		potionCD = 20;
 	}
 }
 
 function useBerserk() {
-	if (inventoryObject.rune == 0) {
+	if (slo.inventoryObject.rune == 0) {
 		$('#error').html('No magic runes ;-;');
 	}
 	else if (potionUsed) {
@@ -533,8 +385,8 @@ function useBerserk() {
 	}
 	else {
 		berserkUsed = true;
-		oldPower = player.power;
-		player.power = player.power*2;
+		oldPower = slo.player.power;
+		slo.player.power = slo.player.power*2;
 		potionUsed = true;
 		potionCD = 15;
 		berserkTimer = 5;
@@ -544,7 +396,7 @@ function useBerserk() {
 var resetSpellUsed = false;
 
 function resetSpells() {
-	if (inventoryObject.rune == 0) {
+	if (slo.inventoryObject.rune == 0) {
 		$('#error').html('No magic runes ;-;');
 	}
 	else if (resetSpellUsed) {
@@ -560,34 +412,34 @@ function resetSpells() {
 
 //updated inventory list for use when navigating to inventory screen
 function inventoryList() {
-	$('#inventoryItems').html("Health Potions: " + inventoryObject.healthPotion + "<br>"
-							+ "Mana Potions: " + inventoryObject.manaPotion + "<br>"
-							+ "Gears: " + inventoryObject.seed + "<br>"
-							+ "Weapon: " + inventoryObject.weapon.name + "<br>"
-							+ "Armor: " + inventoryObject.armor.name + "<br>"
-							+ "Batteries: " + inventoryObject.battery );
+	$('#inventoryItems').html("Health Potions: " + slo.inventoryObject.healthPotion + "<br>"
+							+ "Mana Potions: " + slo.inventoryObject.manaPotion + "<br>"
+							+ "Gears: " + slo.inventoryObject.seed + "<br>"
+							+ "Weapon: " + slo.inventoryObject.weapon.name + "<br>"
+							+ "Armor: " + slo.inventoryObject.armor.name + "<br>"
+							+ "Batteries: " + slo.inventoryObject.battery );
 }
 
 function playerInfoUpdate() {
-	$('#playerInfo').html("Damage: " + player.damage + " <br>"
-						+ "Sword Enchant: " + Math.round(player.swordEnchantVal*100) + "%" + "<br>"
-						+ "Combined Damage: " + Math.round((player.swordEnchantVal*player.damage + player.damage)*player.power) + "<br>"
-						+ "Armor: " + player.reduction + " <br>"
-						+ "Armor Enchant: " + Math.round(player.armorEnchantVal*100) + "%" + "<br>"
-						+ "Combined Armor: " + Math.round(player.armorEnchantVal*player.reduction + player.reduction) + "<br>"
-						+ "Max Health: " + player.maxHealth + " <br>"
-						+ "Sword Healing: " + player.swordHP*100 + "%" + "<br>"
-						+ "Extra Loot Multiplier: " + Math.round((player.freedom*100) -100) + "%");
+	$('#playerInfo').html("Damage: " + slo.player.damage + " <br>"
+						+ "Sword Enchant: " + Math.round(slo.player.swordEnchantVal*100) + "%" + "<br>"
+						+ "Combined Damage: " + Math.round((slo.player.swordEnchantVal*slo.player.damage + slo.player.damage)*slo.player.power) + "<br>"
+						+ "Armor: " + slo.player.reduction + " <br>"
+						+ "Armor Enchant: " + Math.round(slo.player.armorEnchantVal*100) + "%" + "<br>"
+						+ "Combined Armor: " + Math.round(slo.player.armorEnchantVal*slo.player.reduction + slo.player.reduction) + "<br>"
+						+ "Max Health: " + slo.player.maxHealth + " <br>"
+						+ "Sword Healing: " + slo.player.swordHP*100 + "%" + "<br>"
+						+ "Extra Loot Multiplier: " + Math.round((slo.player.freedom*100) -100) + "%");
 };
 
 //buys item if you have enough money else error
 function itemBuy(item) {
 	var itemBought = false;
-	if (player.money < itemPrice) {
+	if (slo.player.money < itemPrice) {
 		storeStatus('Hey! you need more money than that punk');
 	}
 	else {
-		player.money = player.money - itemPrice;
+		slo.player.money = slo.player.money - itemPrice;
 		itemBought = true;
 		//removes the item from store if it has a secondary value
 	}
@@ -600,11 +452,11 @@ function storeStatus(text) {
 
 //updates the cost on the button of the store items if it scales
 function storePriceUpdate() {
-	$('#battery_buy').html(player.batteryCost);
-	$('#rune_buy').html(player.runeCost);
-	$('#hp_buy').html(player.potionCost);
-	$('#gear_buy').html(player.gearCost);
-	$('#mana_buy').html(player.manaCost);
+	$('#battery_buy').html(slo.player.batteryCost);
+	$('#rune_buy').html(slo.player.runeCost);
+	$('#hp_buy').html(slo.player.potionCost);
+	$('#gear_buy').html(slo.player.gearCost);
+	$('#mana_buy').html(slo.player.manaCost);
 }
 
 
@@ -618,10 +470,10 @@ function storeItems(item) {
 			this.itemPrice = 10000;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.diamondSword = true;
+				slo.inventoryObject.diamondSword = true;
 				equipSword();
 				$('#diamond_sword').hide();
-				stuffToShow.diamond_sword = false;
+				slo.stuffToShow.diamond_sword = false;
 				storeStatus('Not made out of blood diamonds but will cause blood~');
 			}
 			break;
@@ -629,71 +481,71 @@ function storeItems(item) {
 			this.itemPrice = 100;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.woodSword = true;
+				slo.inventoryObject.woodSword = true;
 				equipSword();
 				$('#iron_sword').show();
-				stuffToShow.iron_sword = true;
+				slo.stuffToShow.iron_sword = true;
 				storeStatus('This thing wont do much but its better than fists');
 				$('#wood_sword').hide();
-				stuffToShow.wood_sword = false;
+				slo.stuffToShow.wood_sword = false;
 			}
 			break;
 		case "ironSword":
 			this.itemPrice = 1000;
 			var itemBought = itemBuy(item);
 			if(itemBought == true) {
-				inventoryObject.ironSword = true;
+				slo.inventoryObject.ironSword = true;
 				equipSword();
 				storeStatus('Now this will show them');
 				$('#iron_sword').hide();
 				$('#diamond_sword').show();
-				stuffToShow.iron_sword = false;
-				stuffToShow.diamond_sword = true;
+				slo.stuffToShow.iron_sword = false;
+				slo.stuffToShow.diamond_sword = true;
 			}
 			break;
 		case "ironArmor":
 			this.itemPrice = 500;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.ironArmor = true;
+				slo.inventoryObject.ironArmor = true;
 				equipArmor();
 				storeStatus('Better than nothing I guess');
 				$('#iron_armor').hide();
-				stuffToShow.iron_armor = false;
+				slo.stuffToShow.iron_armor = false;
 				$('#diamond_armor').show();
-				stuffToShow.diamond_armor = true;
+				slo.stuffToShow.diamond_armor = true;
 			}
 			break;
 		case 'diamondArmor':
 			this.itemPrice = 5000;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.diamondArmor = true;
+				slo.inventoryObject.diamondArmor = true;
 				equipArmor();
 				storeStatus('This took 9 diamonds to make, dont ruin it!');
 				$('#diamond_armor').hide();
-				stuffToShow.diamond_armor = false;
+				slo.stuffToShow.diamond_armor = false;
 			}
 			break;
 		case "healthPotion":
-			this.itemPrice = player.potionCost;
+			this.itemPrice = slo.player.potionCost;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				player.potionCost = player.potionCost + Math.floor(player.potionCost/5);
-				inventoryObject.healthPotion++;
+				slo.player.potionCost = slo.player.potionCost + Math.floor(slo.player.potionCost/5);
+				slo.inventoryObject.healthPotion++;
 				storeStatus('Heres a Healh Potion, hope you wont need it..');
 			}
 			break;
 		case "manaPotion":
-			this.itemPrice = player.manaCost;
+			this.itemPrice = slo.player.manaCost;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				player.manaCost = player.manaCost + Math.floor(player.manaCost/5);
-				inventoryObject.manaPotion++;
+				slo.player.manaCost = slo.player.manaCost + Math.floor(slo.player.manaCost/5);
+				slo.inventoryObject.manaPotion++;
 				storeStatus('You know you dont even have mana right?');
-				if (inventoryObject.manaPotion > 10) {
+				if (slo.inventoryObject.manaPotion > 10) {
 					storeStatus('Really. I am telling you the truth, these are worthless to you');
-					if (inventoryObject.manaPotion > 20) {
+					if (slo.inventoryObject.manaPotion > 20) {
 						storeStatus('Your determination to be a magic user inspires me ;-;  Please, take this tome, maybe it can help you');
 						itemEquip('tome');
 					}
@@ -701,11 +553,11 @@ function storeItems(item) {
 			}
 			break;
 		case "seed":
-			this.itemPrice = player.gearCost;
+			this.itemPrice = slo.player.gearCost;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.seed++;
-				player.gearCost = player.gearCost + Math.floor(player.gearCost/7);
+				slo.inventoryObject.seed++;
+				slo.player.gearCost = slo.player.gearCost + Math.floor(slo.player.gearCost/7);
 				storeStatus('Gear huh? Might want to checkout the factory.');
 			}
 			break;
@@ -713,31 +565,31 @@ function storeItems(item) {
 			this.itemPrice = 50;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.map = true;
+				slo.inventoryObject.map = true;
 				$('#mapButton').show();
-				stuffToShow.mapButton = true;
+				slo.stuffToShow.mapButton = true;
 				$('#mapListing').hide();
-				stuffToShow.mapListing = false;
+				slo.stuffToShow.mapListing = false;
 				storeStatus('Hey! Dont open that map in my store!');
 			}
 			break;
 		case "battery":
-			this.itemPrice = player.batteryCost;
+			this.itemPrice = slo.player.batteryCost;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				player.batteryCost = player.batteryCost + Math.floor(player.batteryCost/5);
+				slo.player.batteryCost = slo.player.batteryCost + Math.floor(slo.player.batteryCost/5);
 				$('#')
-				inventoryObject.battery++;
+				slo.inventoryObject.battery++;
 				storeStatus('Battery! What could you use this for?');				
 			}
 			break;
 		case "rune":
-			this.itemPrice = player.runeCost;
+			this.itemPrice = slo.player.runeCost;
 			var itemBought = itemBuy(item);
 			if (itemBought == true) {
-				inventoryObject.rune = true;
+				slo.inventoryObject.rune = true;
 				storeStatus('Magic Rune! It is glowing strangely.');
-				player.runeCost = player.runeCost + Math.floor(player.runeCost/5);				
+				slo.player.runeCost = slo.player.runeCost + Math.floor(slo.player.runeCost/5);				
 			}
 	}
 	storePriceUpdate();

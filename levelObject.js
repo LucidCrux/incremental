@@ -17,7 +17,7 @@ function levelInfo() {
 */
 
 function testing(stuff) {
-  stuffToShow.stuff = true;
+  slo.stuffToShow.stuff = true;
 }
 var approach = new levelInfo();
 approach.name = 'approach';
@@ -27,7 +27,7 @@ approach.levelLength = 60;
 approach.specialMonsterNum = 3;
 approach.text = 'There are demons everywhere!';
 approach.levelUnlock = 'figure';
-approach.unlockSave = function() { stuffToShow.figure = true };
+approach.unlockSave = function() { slo.stuffToShow.figure = true };
 approach.ascii = '  ___________________________________________________________\n\
                              \\    /\n\
             _\|\|_              \|  \|            _\|\|_\n\
@@ -54,7 +54,7 @@ cavern.ascii = '\n\
 \<p class \= "level"\>\</p\>\n\
 \n\ ';
 cavern.levelUnlock = 'mine';
-cavern.unlockSave = function() { stuffToShow.mine = true };
+cavern.unlockSave = function() { slo.stuffToShow.mine = true };
 
 var mine = new levelInfo();
 mine.name = 'mine';
@@ -63,7 +63,7 @@ mine.specialMonster = demon;
 mine.specialMonsterNum = 0;
 mine.text = 'Goblin miners are flooding the halls';
 mine.levelUnlock = 'depths';
-mine.unlockSave = function() { stuffToShow.depths = true };
+mine.unlockSave = function() { slo.stuffToShow.depths = true };
 mine.ascii = '____________________________________________________\n\
 \n\
       \$            \$\$          \$\$     \$       \n\
@@ -79,7 +79,7 @@ mine.ascii = '____________________________________________________\n\
 var depths = new levelInfo();
 depths.name = 'depths';
 depths.levelUnlock = 'tower_map';
-depths.unlockSave = function() { stuffToShow.tower_map = true };
+depths.unlockSave = function() { slo.stuffToShow.tower_map = true };
 depths.monster = demon;
 depths.specialMonster = demonWizard;
 depths.specialMonsterNum = 1;
@@ -109,7 +109,7 @@ base.levelLength = 55;
 base.specialMonsterNum = 1;
 base.text = 'The base of the tower';
 base.levelUnlock = 'upper';
-base.unlockSave = function() { stuffToShow.upper = true };
+base.unlockSave = function() { slo.stuffToShow.upper = true };
 base.ascii = '_______________________________________________________________\n\
 \n\
    __       __       __       __       __       __       __\n\
@@ -126,7 +126,7 @@ upper.levelLength = 53;
 upper.specialMonsterNum = 1;
 upper.text = 'The upper level of the tower, the top is near!';
 upper.levelUnlock = 'top';
-upper.unlockSave = function() { stuffToShow.top = true };
+upper.unlockSave = function() { slo.stuffToShow.top = true };
 upper.ascii = '\n\
  ____      ____      ____      ____      ____      ______      _____\n\
 \|    \|____\|    \|____\|    \|____\|    \|____\|    \|____\|    \'\=\|____\|     \|\n\
@@ -146,7 +146,7 @@ top.specialMonsterNum = 2;
 top.levelLength = 55;
 top.text = 'The sun is rising in the distance';
 top.levelUnlock = 'monk_button';
-top.unlockSave = function() { stuffToShow.monk_button = true };
+top.unlockSave = function() { slo.stuffToShow.monk_button = true };
 top.ascii = '\n\
 \n\
 \n\
@@ -167,7 +167,7 @@ cave.specialMonster = dropBear;
 cave.monsterNum = 2;
 cave.text = 'Inside a bears cave! ...Is this a good idea?';
 cave.levelUnlock = 'den';
-cave.unlockSave = function() { stuffToShow.den = true };
+cave.unlockSave = function() { slo.stuffToShow.den = true };
 cave.ascii = '                    _______________________\n\
     _______________________________\\          ____\n\
 ___/                                         /\=\=\=\=\\\n\
@@ -192,10 +192,10 @@ den.text = 'The heart of the bears den! Whats that house doing here?';
 den.specialMonsterNum = 1;
 den.monsterNum = 2;
 den.levelUnlock = 'wizard_button';
-den.unlockSave = function() { stuffToShow.wizard_button = true;
-                              stuffToShow.wizard_home = true;
+den.unlockSave = function() { slo.stuffToShow.wizard_button = true;
+                              slo.stuffToShow.wizard_home = true;
                               $('#wizard_home').show();
-                              stuffToShow.castle = true;
+                              slo.stuffToShow.castle = true;
                               $('#castle').show(); };
 den.ascii = '\n\
                                  /            \\\n\
@@ -222,7 +222,7 @@ gate.text = 'gatestuff';
 gate.specialMonsterNum = 3;
 gate.monsterNum = 10;
 gate.levelUnlock = 'armory';
-gate.unlockSave = function() { stuffToShow.armory = true };
+gate.unlockSave = function() { slo.stuffToShow.armory = true };
 gate.ascii = '\n\
 \n\
 \n\
@@ -243,7 +243,7 @@ armory.text = 'armory stuff';
 armory.specialMonsterNum = 2;
 armory.monsterNum = 4;
 armory.levelUnlock = 'throne';
-armory.unlockSave = function() { stuffToShow.throne = true };
+armory.unlockSave = function() { slo.stuffToShow.throne = true };
 armory.ascii = '\n\
 --------------------------------------------------\n\
 \n\
@@ -264,7 +264,7 @@ throne.text = 'throne stuff';
 throne.specialMonsterNum = 1;
 throne.monsterNum = 5;
 throne.levelUnlock = 'lich';
-throne.unlockSave = function() { stuffToShow.lich = true };
+throne.unlockSave = function() { slo.stuffToShow.lich = true };
 throne.ascii = '\n\
 ===================================================\n\
         |           |           |           |      \n\
@@ -317,7 +317,7 @@ woods.levelLength = 55;
 woods.text = 'These trees are gigantic! And there are lich controlled monsters in here..'
 woods.name = 'woods';
 woods.levelUnlock = 'cabin';
-woods.unlockSave = function() { stuffToShow.cabin = true };
+woods.unlockSave = function() { slo.stuffToShow.cabin = true };
 woods.ascii = '\n\
        |  |   \\\\|.\'    |  |    \\\\|.\'   |  |     \\\\|.\'  |  |\n\
        | ||   \\\\` /   _.| ||,!  \\` /   _| ||\\,!  \\` /   | ||\n\
@@ -342,7 +342,7 @@ cabin.specialMonsterNum = 1;
 cabin.text = 'Theres the cabin! Looks like an Undead Wizard was squatting there';
 cabin.name = 'cabin';
 cabin.levelUnlock = 'cabin_map'
-cabin.unlockSave = function() { stuffToShow.cabin_map = true };
+cabin.unlockSave = function() { slo.stuffToShow.cabin_map = true };
 cabin.more = false;
 cabin.ascii = '\n\
        |  |   \\\\|.\'    |  |    \\\\|.\'   |  |     \\\\|.\'        |  |\n\
@@ -383,7 +383,7 @@ __________________________________________________=_______\n\
 
 var inside = new levelInfo();
 inside.levelUnlock = 'sewer';
-inside.unlockSave = function() { stuffToShow.sewer = true };
+inside.unlockSave = function() { slo.stuffToShow.sewer = true };
 inside.text = 'This place is sick';
 inside.levelLength = 35;
 inside.monster = turtle;
@@ -403,7 +403,7 @@ __________________________________________________________\n\
 
 var entrance = new levelInfo();
 entrance.levelUnlock = 'prison';
-entrance.unlockSave = function() { stuffToShow.prison = true };
+entrance.unlockSave = function() { slo.stuffToShow.prison = true };
 entrance.text = 'No backing out now!';
 entrance.levelLength = 33;
 entrance.monster = undeadKnight;
@@ -430,7 +430,7 @@ entrance.ascii = '\n\
 
 var prison = new levelInfo();
 prison.levelUnlock = 'tunnel';
-prison.unlockSave = function() { stuffToShow.tunnel = true };
+prison.unlockSave = function() { slo.stuffToShow.tunnel = true };
 prison.text = 'Wonder what these guys did';
 prison.levelLength = 40;
 prison.monster = scientist;
@@ -456,7 +456,7 @@ ____  ____  ____  ____  ____  ____  ____\n\
 
 var tunnel = new levelInfo();
 tunnel.levelUnlock = 'danger';
-tunnel.unlockSave = function() { stuffToShow.danger = true };
+tunnel.unlockSave = function() { slo.stuffToShow.danger = true };
 tunnel.text = 'A giant Jail Ogre is here!';
 tunnel.levelLength = 28;
 tunnel.monster = jailer;
@@ -478,7 +478,7 @@ ______||||______||||______|----|_____||||______\n\
 
 var hanger = new levelInfo();
 hanger.levelUnlock = 'laboratory';
-hanger.unlockSave = function() { stuffToShow.laboratory = true };
+hanger.unlockSave = function() { slo.stuffToShow.laboratory = true };
 hanger.text = 'Finally! The rockets!';
 hanger.levelLength = 45;
 hanger.monster = rocketScientist;
@@ -506,7 +506,7 @@ _______/ | | \\_______/ | | \\_______/ | | \\_________\n\
 
 var danger = new levelInfo();
 danger.levelUnlock = 'hanger';
-danger.unlockSave = function() { stuffToShow.hanger = true };
+danger.unlockSave = function() { slo.stuffToShow.hanger = true };
 danger.levelLength = 40;
 danger.monster = beast;
 danger.text = 'some kind of arena... A giant beast is in the center!';
@@ -538,8 +538,8 @@ danger.ascii = '\n\
 var finish = new levelInfo();
 finish.levelLength = 46;
 finish.levelUnlock = 'end_button';
-finish.unlockSave = function() { stuffToShow.end_button = true;
-                                 stuffToShow.badEnd_button = true;
+finish.unlockSave = function() { slo.stuffToShow.end_button = true;
+                                 slo.stuffToShow.badEnd_button = true;
                                  $('#badEnd_button').show();  }
 finish.text = 'The final battle!';
 finish.monster = lich;
