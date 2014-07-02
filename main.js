@@ -32,7 +32,7 @@ slo.resetGame = function() {
 
 		saveGame();
 		$('#error').html('Please refresh the window for the entire reset to work');
-		loadGame();
+		slo.loadGame();
 
 	}
 };
@@ -235,7 +235,7 @@ slo.saveLoop = function() {
 		saveGame();
 		console.log('game saved');
 	}
-	setTimeout(saveLoop, 5000);
+	setTimeout(slo.saveLoop, 5000);
 };
 
 /****************************************************
@@ -243,16 +243,16 @@ slo.saveLoop = function() {
  ****************************************************/
 //main game loop, adds resources and hp
 slo.mainLoop = function() {
-	ectoplasmGenerator(slo.player.gears);
+	slo.ectoplasmGenerator(slo.player.gears);
 	if (slo.player.health < slo.player.maxHealth) {
-		healthRegen();
-		updateHealthBar();
+		slo.healthRegen();
+		slo.updateHealthBar();
 	}
 	fixHP();
 	if (slo.gameState.batteryOn == true) {
-		bloodGenerator(slo.player.batteries);
+		slo.bloodGenerator(slo.player.batteries);
 	}
-	setTimeout(mainLoop, 1000);
+	setTimeout(slo.mainLoop, 1000);
 };
 
 //quest loop, called if level is active
@@ -305,7 +305,7 @@ slo.questLoop = function(monster) {
 	}
 
 	setTimeout(function() {
-		questLoop(monster);
+		slo.questLoop(monster);
 	}, 500);
 };
 
@@ -314,7 +314,7 @@ slo.animateLoop = function() {
 	smokeAnimate();
 	blinkAnimate();
 
-	setTimeout(animateLoop, 750);
+	setTimeout(slo.animateLoop, 750);
 };
 
 /************************************************
@@ -388,10 +388,15 @@ slo.locationSwitch = function(location) {
 
 //loads dom elements & event listeners
 window.onload = function() {
-	loadGame();
-	mainLoop();
-	saveLoop();
-	locationSwitch(Main);
+	//load default values
+	slo.resetStuffToShow();
+	slo.resetInventoryObjects();
+	slo.resetPlayer();
+	
+	slo.loadGame();
+	slo.mainLoop();
+	slo.saveLoop();
+	slo.locationSwitch(Main);
 	$('#ascii_text').html(cavern.ascii);
 
 	var reflectingPool = document.getElementById('reflectingPool');
@@ -418,9 +423,9 @@ window.onload = function() {
 			$('#error').html('The Demon Wizard Elder does not allow repeat visits');
 			return;
 		}
-		locationSwitch(locationVal);
+		slo.locationSwitch(locationVal);
 		if (buttonValue == 'Mountain') {
-			magicDoor();
+			slo.magicDoor();
 		}
 		else if (buttonValue == 'Inventory') {
 			inventoryList();

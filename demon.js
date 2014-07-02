@@ -1,4 +1,4 @@
-//takes slo.players choice and asks them to confirm, then applies their choice affects and slo.player.sinChoosen becomes true for the monk encounter
+//takes players choice and asks them to confirm, then applies their choice affects and slo.player.sinChoosen becomes true for the monk encounter
 function chooseSin(choice) {
 	var message = "You can only pick one and thats what you are going with?";
 	if (confirm(message)) {

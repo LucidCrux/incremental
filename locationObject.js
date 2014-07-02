@@ -30,7 +30,7 @@ $('.location_button, pre').click(function() {
 		$('#' + split[1]).hide();
 		$('#' + split[0]).fadeIn('slow');
 		if (split[0] == 'mountain') {
-			magicDoor();
+			slo.magicDoor();
 		}
 		else if (split[0] == 'store') {
 			$('#store_status').html('You looking to buy?');

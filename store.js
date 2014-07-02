@@ -297,7 +297,7 @@ function armorEnchantRed() {
 function fixHP() {
 	if (slo.player.health > slo.player.maxHealth) {
 		slo.player.health = slo.player.maxHealth;
-		updateHealthBar();
+		slo.updateHealthBar();
 	}
     else if (slo.player.health < 0) {
 		slo.player.health = 0;
@@ -320,7 +320,7 @@ function useHealthPotion() {
 			potionUsed = true;
 			potionCD = 15;
 			slo.inventoryObject.healthPotion--;
-			updateHealthBar();
+			slo.updateHealthBar();
 			inventoryList();
 			$('#health_potion_button').html('Use HP(' + slo.inventoryObject.healthPotion + ')');
 		}

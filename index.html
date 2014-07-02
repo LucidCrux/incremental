@@ -40,7 +40,7 @@
 			<button class = "location_button" id = "inventoryButton" value = "Inventory">Inventory</button>
       <button id = "about_button" class = "location_button" value = "About">About</button>
       <button id = "inverse_button" onclick = 'inverseColors()'>Inverse</button>
-      <button id = 'click_button' onclick = "ectoplasmClick(1)">Click</button>
+      <button id = 'click_button' onclick = "slo.ectoplasmClick(1)">Click</button>
 			
 			<p id = "ectoplasm">You have 0 gold</p>
 			<p id = "blood">?</p>
@@ -664,7 +664,7 @@ Sher^
     </div>
     <div id = "cabin_inside_special">
       <button onclick = 'cabinRest()' id = 'cabin_rest'>Rest</button>
-      <button onclick = 'lightFire()'>Put log on fire</button>
+      <button onclick = 'slo.lightFire()'>Put log on fire</button>
       <button value = 'Book' class = 'location_button'>Check out a book</button>
       <br>
       <button value = 'Cabin' class = 'location_button'>Go back outside</button>
@@ -855,7 +855,7 @@ ___________|_|_
       <p>If you find any bugs/issues you can <a href = "mailto:just.forcier@gmail.com">e-mail</a>
       and Ill take care of it. Thanks for playing!</p>
       <br>
-      <button onclick = 'resetGame()'>Reset Game</button>
+      <button onclick = 'slo.resetGame()'>Reset Game</button>
   </div><!--location_div-->
 	</div><!--wrapper-->
 

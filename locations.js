@@ -109,7 +109,7 @@ function raiseRestPrice() {
 
 function cabinRest() {
 	slo.player.health = slo.player.maxHealth;
-	updateHealthBar();
+	slo.updateHealthBar();
 	$('#location_text').html('You are fully rested');
 }
 
@@ -164,7 +164,7 @@ function stealItems() {
 	$('#camp_use').show();
 	slo.player.restPrice = 1;
 	slo.player.thief = true;
-	locationSwitch(Map);
+	slo.locationSwitch(Map);
 	$('#error').html('You take the items and leave, gained 5000 gold and 500 gunk');
 	slo.player.camp = true;
 	campgroundAfterScenario();

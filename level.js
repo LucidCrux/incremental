@@ -46,7 +46,7 @@ function moveInLevel(monstertest) {
 	if (monstertest.monster.name == 'Beast') {
 		beastCleave();
 	}
-	var slo.player = 'Y';
+	var player = 'Y';
 	if (level[i] == '_'); {
 		level[i] = 'Y';
 		level[i - 1] = '_';
@@ -242,7 +242,7 @@ function getQuestSelect(quest) {
 	questSelected = $(quest).val();
 	currentLevelInfo = levelObject[questSelected];
 	loadLevel(currentLevelInfo)
-	questLoop(currentLevelInfo);
+	slo.questLoop(currentLevelInfo);
 }
 
 //random chance to spawn a dropBear monster a few steps in front of
