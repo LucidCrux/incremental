@@ -147,8 +147,6 @@ slo.resetPlayer = function() {
 	slo.player = {
 			damage: swordObject.fists.damage,
 			reduction: slo.inventoryObject.armor.reduction,
-			armorEnchant: this.reduction * this.armorEnchantVal,
-			swordEnchant: this.damage * this.swordEnchantVal,
 			camp: false,
 			power: 1,
 			gears: 1,
@@ -159,6 +157,8 @@ slo.resetPlayer = function() {
 			armorEnchantVal: 0,
 			swordEnchantCost: 1000,
 			armorEnchantCost: 1000,
+			armorEnchant: this.reduction * this.armorEnchantVal,
+			swordEnchant: this.damage * this.swordEnchantVal,
 			monkVisit: false,
 			postLich: false,
 			restPrice: 0,
