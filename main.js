@@ -194,7 +194,7 @@ slo.resetPlayer = function() {
 slo.loadGame = function() {
 	if (!localStorage['player_save']) return;
 	var player_data = JSON.parse(atob(localStorage['player_save']));
-	slo.player = slo.player_data;
+	slo.player = player_data;
 	var inventory_data = JSON.parse(atob(localStorage['inventory_save']));
 	slo.inventoryObject = inventory_data;
 	var show_data = JSON.parse(atob(localStorage['show_save']));
