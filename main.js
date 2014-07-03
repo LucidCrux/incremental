@@ -392,6 +392,7 @@ window.onload = function() {
 	slo.resetStuffToShow();
 	slo.resetInventoryObjects();
 	slo.resetPlayer();
+	slo.gameState.previousLocation = levelInfo;
 	
 	slo.loadGame();
 	slo.mainLoop();
