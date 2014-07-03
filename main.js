@@ -232,7 +232,7 @@ slo.saveLoop = function() {
 		console.log('cant save in level');
 	}
 	else {
-		saveGame();
+		slo.saveGame();
 		console.log('game saved');
 	}
 	setTimeout(slo.saveLoop, 5000);
