@@ -376,7 +376,7 @@ slo.magicDoor = function() {
 }
 
 slo.locationSwitch = function(location) {
-		$(previousLocation.special).hide();
+		$(slo.gameState.previousLocation.special).hide();
 		slo.gameState.previousLocation = location;
 		$('#error').html('');
 		$('#location_ascii').hide();
